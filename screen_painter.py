@@ -8,7 +8,7 @@ def one_colour(ball, colour = C_WHITE):
 	return colour
 
 def speed(ball):
-	shade = max(30, round(min(abs((ball.x_vel + ball.y_vel) * 200), 255)))
+	shade = max(45, round(min(abs((ball.x_vel + ball.y_vel) * 250), 255)))
 	return (shade, shade, shade)
 
 class ScreenPainter:

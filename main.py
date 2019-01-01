@@ -4,17 +4,9 @@ from pygame.locals import *
 import random
 import new_balls
 import screen_painter
+from game_state import GameState
 import os
 import math
-
-def keep_running(events):
-	for event in events:
-		if event.type == KEYDOWN:
-			if event.key == K_q:
-				return False
-		elif event.type == QUIT:
-			return False
-	return True
 
 def initial_balls():
 	MAX_BALL_RADIUS = 25
@@ -49,23 +41,23 @@ SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 900
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-running = True
 balls = initial_balls()
 grav_balls = [Ball(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3, 10), Ball(2 * SCREEN_WIDTH / 3, 2 * SCREEN_HEIGHT / 3, 10)]
 
+game_state = GameState()
 new_ball_handler = new_balls.BallSpawner()
 painter = screen_painter.ScreenPainter()
 painter.ball_painting_algorithm = screen_painter.speed
 
-while running:
-	events = pygame.event.get()
-	running = keep_running(events)
+while game_state.running:
+	game_state.handle_inputs(pygame.event.get())
 
-	new_ball_handler.spawn_new_balls(pygame.mouse.get_pressed()[0], balls)
+	if not game_state.paused:
+		new_ball_handler.spawn_new_balls(pygame.mouse.get_pressed()[0], balls)
 
-	for ball in balls:
-		update_ball(ball, grav_balls)
+		for ball in balls:
+			update_ball(ball, grav_balls)
 
-	painter.paint(screen, balls, grav_balls)
+		painter.paint(screen, balls, grav_balls)
 
-	pygame.display.flip()
+		pygame.display.flip()
