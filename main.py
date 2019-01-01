@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import random
 import new_balls
+import screen_painter
 import os
 import math
 
@@ -53,6 +54,8 @@ balls = initial_balls()
 grav_balls = [Ball(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3, 10), Ball(2 * SCREEN_WIDTH / 3, 2 * SCREEN_HEIGHT / 3, 10)]
 
 new_ball_handler = new_balls.BallSpawner()
+painter = screen_painter.ScreenPainter()
+painter.ball_painting_algorithm = screen_painter.speed
 
 while running:
 	events = pygame.event.get()
@@ -63,12 +66,6 @@ while running:
 	for ball in balls:
 		update_ball(ball, grav_balls)
 
-	screen.fill((0,0,0))
-
-	for ball in balls:
-		pygame.draw.circle(screen, (255, 255, 255), (round(ball.x), round(ball.y)), round(ball.r))
-
-	for grav_ball in grav_balls:
-		pygame.draw.circle(screen, (255, 0, 0), (round(grav_ball.x), round(grav_ball.y)), round(grav_ball.r))
+	painter.paint(screen, balls, grav_balls)
 
 	pygame.display.flip()
