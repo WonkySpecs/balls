@@ -12,8 +12,8 @@ class Ball(Particle):
 		self.y = y
 		self.r = r
 		self.m = r_to_m(r)
-		self.x_vel = random.uniform(-0.15, 0.15)
-		self.y_vel = random.uniform(-0.15, 0.15)
+		self.x_vel = 0
+		self.y_vel = 0
 
 	def update_pos(self):
 		self.x += self.x_vel
