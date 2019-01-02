@@ -1,12 +1,11 @@
 import random
 import math
-from particle import Particle
 
 #Simulating mass as proportional to area
 def r_to_m(r):
 	return math.pi * r**2
 
-class Ball(Particle):
+class Ball:
 	def __init__(self, x = 0, y = 0, r = 1):
 		self.x = x
 		self.y = y
