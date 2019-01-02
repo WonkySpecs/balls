@@ -2,10 +2,13 @@ import pygame
 from enum import Enum, auto
 
 class Colour(Enum):
-	INITIAL = GREY = [0, 1, 2]
+	GREY = [0, 1, 2]
 	RED = [0]
 	GREEN = [1]
 	BLUE = [2]
+
+	def initial():
+		return Colour.GREY
 
 def one_colour(ball, colour = Colour.RED):
 	return colour

@@ -30,7 +30,7 @@ while game_state.running:
 	if not game_state.paused:
 		new_ball_handler.update(game_state.get_click_spawn_behaviour())
 		if pygame.mouse.get_pressed()[0]:
-			new_ball_handler.spawn(balls, grav_balls)
+			new_ball_handler.handle_action(game_state.get_click_action(), balls, grav_balls)
 
 		for ball in balls:
 			update_ball(ball, grav_balls)
