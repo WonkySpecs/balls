@@ -13,9 +13,8 @@ def initial_balls(SCREEN_WIDTH, SCREEN_HEIGHT):
 	return balls
 
 class NewObject(Enum):
-	BALL = auto()
+	INITIAL = BALL = auto()
 	GRAV_BALL = auto()
-	INITIAL = BALL
 
 MAX_BALLS = 100
 NEW_BALL_RATE_LIMIT = 50
