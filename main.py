@@ -17,7 +17,7 @@ SCREEN_HEIGHT = 900
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 balls = initial_balls(SCREEN_WIDTH, SCREEN_HEIGHT)
-grav_balls = [Ball(SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3, 10), Ball(2 * SCREEN_WIDTH / 3, 2 * SCREEN_HEIGHT / 3, 10)]
+grav_balls = []
 
 game_state = GameState()
 new_ball_handler = Spawner()
@@ -34,7 +34,7 @@ while game_state.running:
 	if not game_state.paused:
 		for ball in balls:
 			update_ball(ball, grav_balls)
-			
+
 	painter.paint(screen, balls, grav_balls, game_state.get_ball_colour())
 
 	pygame.display.flip()
