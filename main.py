@@ -7,7 +7,7 @@ from spawner import initial_balls, Spawner
 import screen_painter
 from ball import Ball
 from game_state import GameState
-from physics import update_ball
+from physics import update_ball, handle_wall_collision
 
 #Set window position on screen
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (50, 50)
@@ -34,6 +34,7 @@ while game_state.running:
 	if not game_state.paused:
 		for ball in balls:
 			update_ball(ball, grav_balls)
+			handle_wall_collision(ball, game_state.get_wall_action(), SCREEN_WIDTH, SCREEN_HEIGHT)
 
 	painter.paint(screen, balls, grav_balls, game_state.get_ball_colour())
 

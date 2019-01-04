@@ -1,4 +1,13 @@
 import math
+from enum import Enum, auto
+
+class WallAction(Enum):
+	NONE = lambda b, w, h: None
+	BOUNCE = lambda b, w, h: wall_bounce(b, w, h)
+	WRAP = lambda b, w, h: wrap_around(b, w, h)
+
+	def initial():
+		return WallAction.BOUNCE
 
 def calc_grav_force(ball, grav_ball):
 	f = 0.008 * (ball.m * grav_ball.m) / ball.distance_to_squared(grav_ball)
@@ -21,3 +30,26 @@ def update_ball(ball, grav_balls):
 		total_y_f += y_f
 
 	ball.update(total_x_f, total_y_f)
+
+def handle_wall_collision(ball, wall_action, screen_width, screen_height):
+	wall_action(ball, screen_width, screen_height)
+
+def wall_bounce(ball, screen_width, screen_height):
+	if (ball.x - ball.r) < 0 or (ball.x + ball.r) > screen_width:
+		ball.x_vel *= -1
+
+	if (ball.y - ball.r) < 0 or (ball.y + ball.r) > screen_height:
+		ball.y_vel *= -1
+
+def wrap_around(ball, screen_width, screen_height):
+	if ball.x < 0:
+		ball.x = screen_width
+
+	if ball.x > screen_width:
+		ball.x = 0
+
+	if ball.y < 0:
+		ball.y = screen_height
+
+	if ball.y > screen_height:
+		ball.y = 0

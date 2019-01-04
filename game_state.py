@@ -3,12 +3,14 @@ from pygame.locals import *
 
 from spawner import NewObject, ClickAction
 from screen_painter import Colour
+from physics import WallAction
 
 class Modes:
 	def __init__(self):
 		self.ball_colour = Colour.initial()
 		self.click_spawn_behaviour = NewObject.initial()
 		self.click_action = ClickAction.initial()
+		self.wall_action = WallAction.initial()
 
 	def set_ball_colour(self, ball_colour):
 		self.ball_colour = ball_colour
@@ -19,6 +21,9 @@ class Modes:
 	def set_click_action(self, click_action):
 		self.click_action = click_action
 
+	def set_wall_action(self, wall_action):
+		self.wall_action = wall_action
+
 class GameState:
 	mode_toggle_keys = { 
 		K_v : lambda modes: Modes.set_click_spawn_behaviour(modes, NewObject.BALL),
@@ -28,7 +33,10 @@ class GameState:
 		K_b : lambda modes: Modes.set_ball_colour(modes, Colour.BLUE),
 		K_t : lambda modes: Modes.set_ball_colour(modes, Colour.GREY),
 		K_s : lambda modes: Modes.set_click_action(modes, ClickAction.SPAWN),
-		K_d : lambda modes: Modes.set_click_action(modes, ClickAction.REMOVE)
+		K_d : lambda modes: Modes.set_click_action(modes, ClickAction.REMOVE),
+		K_u : lambda modes: Modes.set_wall_action(modes, WallAction.BOUNCE),
+		K_i : lambda modes: Modes.set_wall_action(modes, WallAction.WRAP),
+		K_o : lambda modes: Modes.set_wall_action(modes, WallAction.NONE)
 	}
 
 	def __init__(self):
@@ -56,3 +64,6 @@ class GameState:
 
 	def get_click_action(self):
 		return self.modes.click_action
+
+	def get_wall_action(self):
+		return self.modes.wall_action
