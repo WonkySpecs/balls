@@ -27,14 +27,15 @@ painter.ball_painting_algorithm = screen_painter.speed
 while game_state.running:
 	game_state.handle_inputs(pygame.event.get())
 
-	if not game_state.paused:
-		new_ball_handler.update(game_state.get_click_spawn_behaviour())
-		if pygame.mouse.get_pressed()[0]:
-			new_ball_handler.handle_action(game_state.get_click_action(), balls, grav_balls)
+	new_ball_handler.update(game_state.get_click_spawn_behaviour())
+	if pygame.mouse.get_pressed()[0]:
+		new_ball_handler.handle_action(game_state.get_click_action(), balls, grav_balls)
 
+	if not game_state.paused:
 		for ball in balls:
 			update_ball(ball, grav_balls)
+			
+	painter.paint(screen, balls, grav_balls, game_state.get_ball_colour())
 
-		painter.paint(screen, balls, grav_balls, game_state.get_ball_colour())
+	pygame.display.flip()
 
-		pygame.display.flip()
