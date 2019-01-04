@@ -10,25 +10,26 @@ class Modes:
 		self.click_spawn_behaviour = NewObject.initial()
 		self.click_action = ClickAction.initial()
 
-	def set(self, value_to_set):
-		if isinstance(value_to_set, Colour):
-			self.ball_colour = value_to_set
-		elif isinstance(value_to_set, NewObject):
-			self.click_spawn_behaviour = value_to_set
-		elif isinstance(value_to_set, ClickAction):
-			self.click_action = value_to_set
-		else:
-			raise Exception("Invalid mode_to_toggle_to " + mode_to_toggle_to + " passed to modes.set_from_handled_inputs()")
+	def set_ball_colour(self, ball_colour):
+		self.ball_colour = ball_colour
+
+	def set_click_spawn_behaviour(self, click_spawn_behaviour):
+		self.click_spawn_behaviour = click_spawn_behaviour
+
+	def set_click_action(self, click_action):
+		self.click_action = click_action
 
 class GameState:
-	mode_toggle_keys = { K_v : NewObject.BALL,
-						 K_f : NewObject.GRAV_BALL,
-						 K_r : Colour.RED,
-						 K_g : Colour.GREEN,
-						 K_b : Colour.BLUE,
-						 K_t : Colour.GREY,
-						 K_s : ClickAction.SPAWN,
-						 K_d : ClickAction.REMOVE }
+	mode_toggle_keys = { 
+		K_v : lambda modes: Modes.set_click_spawn_behaviour(modes, NewObject.BALL),
+		K_f : lambda modes: Modes.set_click_spawn_behaviour(modes, NewObject.GRAV_BALL),
+		K_r : lambda modes: Modes.set_ball_colour(modes, Colour.RED),
+		K_g : lambda modes: Modes.set_ball_colour(modes, Colour.GREEN),
+		K_b : lambda modes: Modes.set_ball_colour(modes, Colour.BLUE),
+		K_t : lambda modes: Modes.set_ball_colour(modes, Colour.GREY),
+		K_s : lambda modes: Modes.set_click_action(modes, ClickAction.SPAWN),
+		K_d : lambda modes: Modes.set_click_action(modes, ClickAction.REMOVE)
+	}
 
 	def __init__(self):
 		self.modes = Modes()
@@ -43,7 +44,7 @@ class GameState:
 				elif event.key == K_SPACE:
 					self.paused = False if self.paused else True
 				elif event.key in GameState.mode_toggle_keys.keys():
-					self.modes.set(GameState.mode_toggle_keys[event.key])
+					GameState.mode_toggle_keys[event.key](self.modes)
 			elif event.type == QUIT:
 				self.running = False
 
