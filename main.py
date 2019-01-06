@@ -20,21 +20,26 @@ balls = initial_balls(SCREEN_WIDTH, SCREEN_HEIGHT)
 grav_balls = []
 
 game_state = GameState()
-new_ball_handler = Spawner()
+object_handler = Spawner()
 painter = screen_painter.ScreenPainter()
 painter.ball_painting_algorithm = screen_painter.speed
 
 while game_state.running:
 	game_state.handle_inputs(pygame.event.get())
 
-	new_ball_handler.update(game_state.get_click_spawn_behaviour())
+	object_handler.update(game_state.get_click_spawn_behaviour())
 	if pygame.mouse.get_pressed()[0]:
-		new_ball_handler.handle_action(game_state.get_click_action(), balls, grav_balls)
+		object_handler.handle_action(game_state.get_click_action(), balls, grav_balls)
 
 	if not game_state.paused:
+		balls_to_delete = []
 		for ball in balls:
 			update_ball(ball, grav_balls)
 			handle_wall_collision(ball, game_state.get_wall_action(), SCREEN_WIDTH, SCREEN_HEIGHT)
+			if abs(ball.x - SCREEN_WIDTH) > SCREEN_WIDTH or abs(ball.y - SCREEN_HEIGHT) > SCREEN_HEIGHT:
+				balls_to_delete.append(ball)
+
+		Spawner.delete(balls_to_delete, balls)
 
 	painter.paint(screen, balls, grav_balls, game_state.get_ball_colour())
 

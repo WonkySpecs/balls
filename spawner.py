@@ -59,8 +59,7 @@ class Spawner:
 	def delete_under_cursor(self, existing):
 		mouse_pos = pygame.mouse.get_pos()
 		to_remove = [ball for ball in existing if abs(ball.x - mouse_pos[0]) < ball.r and abs(ball.y - mouse_pos[1]) < ball.r]
-		for ball in to_remove:
-			existing.remove(ball)
+		Spawner.delete(to_remove, existing)
 
 	def handle_action(self, action, balls, grav_balls):
 		if action == ClickAction.SPAWN:
@@ -82,3 +81,10 @@ class Spawner:
 			self.time_since_last_ball += 1
 		if self.time_since_last_grav_ball < NEW_GRAV_BALL_RATE_LIMIT:
 			self.time_since_last_grav_ball += 1
+
+	def delete(objects, collection):
+		for o in objects:
+			if o in collection:
+				collection.remove(o)
+			else:
+				raise Exception("Requested delete on object " + str(o) + " from collection " + str(collection) + " which object was not in")
