@@ -6,6 +6,7 @@ import os
 from spawner import initial_balls, Spawner
 import screen_painter
 from ball import Ball
+from force_ball import ForceBall
 from game_state import GameState
 from physics import update_ball, handle_wall_collision
 
@@ -17,7 +18,7 @@ SCREEN_HEIGHT = 900
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 balls = initial_balls(SCREEN_WIDTH, SCREEN_HEIGHT)
-grav_balls = []
+force_balls = []
 
 game_state = GameState()
 object_handler = Spawner()
@@ -29,19 +30,19 @@ while game_state.running:
 
 	object_handler.update(game_state.get_click_spawn_behaviour())
 	if pygame.mouse.get_pressed()[0]:
-		object_handler.handle_action(game_state.get_click_action(), balls, grav_balls)
+		object_handler.handle_action(game_state.get_click_action(), balls, force_balls, game_state.get_new_spawn_force())
 
 	if not game_state.paused:
 		balls_to_delete = []
 		for ball in balls:
-			update_ball(ball, grav_balls)
+			update_ball(ball, force_balls)
 			handle_wall_collision(ball, game_state.get_wall_action(), SCREEN_WIDTH, SCREEN_HEIGHT)
 			if abs(ball.x - SCREEN_WIDTH) > SCREEN_WIDTH or abs(ball.y - SCREEN_HEIGHT) > SCREEN_HEIGHT:
 				balls_to_delete.append(ball)
 
 		Spawner.delete(balls_to_delete, balls)
 
-	painter.paint(screen, balls, grav_balls, game_state.get_ball_colour())
+	painter.paint(screen, balls, force_balls, game_state.get_ball_colour())
 
 	pygame.display.flip()
 

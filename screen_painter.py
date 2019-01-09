@@ -24,11 +24,11 @@ class ScreenPainter:
 	def set_painting_algorithms():
 		pass
 
-	def paint(self, screen, balls, grav_balls, ball_colour):
+	def paint(self, screen, balls, force_balls, ball_colour):
 		screen.fill((0, 0, 0))
 
 		for ball in balls:
 			pygame.draw.circle(screen, self.ball_painting_algorithm(ball, ball_colour), (round(ball.x), round(ball.y)), round(ball.r))
 
-		for grav_ball in grav_balls:
-			pygame.draw.circle(screen, (255, 0, 0), (round(grav_ball.x), round(grav_ball.y)), round(grav_ball.r))
+		for force_ball in force_balls:
+			pygame.draw.circle(screen, (255, 0, 0), (round(force_ball.x), round(force_ball.y)), round(force_ball.r))
